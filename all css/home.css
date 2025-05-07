@@ -1,0 +1,97 @@
+
+      body {
+        background-color: #141414;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+      }
+      .navbar {
+        background-color: #000;
+      }
+      .navbar-brand, .nav-link {
+        color: #ffffff !important;
+      }
+      .nav-link:hover {
+        color: #e50914 !important;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+      }
+      .searchInput {
+        padding: 5px;
+        border-radius: 5px 0 0 5px;
+        border: none;
+        outline: none;
+      }
+      .searchBtn {
+        padding: 5px 10px;
+        background-color: #e50914;
+        color: #ffffff;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+      }
+      .searchBtn:hover {
+        background-color: #f40612;
+      }
+      .section-title {
+        font-size: 1.5rem;
+        margin: 20px 0 10px;
+        padding-left: 15px;
+      }
+      .movie-row {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 10px;
+      }
+      .movie-card {
+        flex: 0 0 auto;
+        text-align: center;
+      }
+      .movie-card img {
+        transition: transform 0.3s;
+      }
+      .movie-card img:hover {
+        transform: scale(1.05);
+      }
+      .rest {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 10px;
+      }
+      .restCard {
+        width: 200px;
+        background-color: #222;
+        text-align: center;
+      }
+      .restCard img {
+        width: 100%;
+        height: auto;
+      }
+      footer {
+        background-color: #000;
+        color: #757575;
+        padding: 40px 0;
+        margin-top: 40px;
+      }
+      footer a {
+        color: #757575;
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+      #greeter {
+        background-color: #222;
+        color: #ffffff;
+      }
+      .small{
+        display: block;
+        width: 50%;
+        margin: 10px auto !important;
+      }
+    

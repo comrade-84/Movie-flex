@@ -1,0 +1,115 @@
+body {
+    background-color: #FFFFFF;
+    color: #141414;
+    font-family: Arial, sans-serif;
+  }
+  /* Navbar */
+  .navbar {
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #6B46C1;
+  }
+  .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #6B46C1; /* Purple for MovieFlix logo */
+  }
+  .sign-out {
+    color: #141414;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 550 !important ;
+    transition: ease-in-out 0.3s;
+    /* background-color: #FFFFFF; */
+  }
+  .sign-out:hover {
+    /* text-decoration: underline; */
+    border: 1px solid #fff;
+    color: #fff;
+    background-color: #553C9A !important;
+  }
+  /* Main Content */
+  .setup-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+  .setup-content {
+    max-width: 440px;
+    width: 100%;
+  }
+  .setup-section {
+    display: none;
+  }
+  .setup-section.active {
+    display: block;
+  }
+  .device-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .device-icons i {
+    font-size: 2rem;
+    color: #737373;
+  }
+  .step-text {
+    font-size: 0.9rem;
+    color: #737373;
+    margin-bottom: 0.5rem;
+  }
+  .setup-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  .setup-section p {
+    font-size: 1.25rem;
+    color: #737373;
+    margin-bottom: 2rem;
+  }
+  .form-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+  .form-group label {
+    font-size: 1rem;
+    color: #141414;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+  }
+  .form-group input:focus {
+    border-color: #6B46C1;
+    outline: none;
+    box-shadow: 0 0 5px rgba(107, 70, 193, 0.5);
+  }
+  .plan-options {
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+  .plan-options .form-check {
+    margin-bottom: 1rem;
+  }
+  .plan-options .form-check-label {
+    font-size: 1.25rem;
+    color: #141414;
+  }
+  .btn-primary {
+    background-color: #6B46C1; /* Purple button */
+    border-color: #6B46C1;
+    font-size: 1.25rem;
+    padding: 0.75rem 2rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-primary:hover {
+    background-color: #553C9A;
+    border-color: #553C9A;
+  }

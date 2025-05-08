@@ -88,7 +88,11 @@ async function populateRest() {
         <img class="d-block m-auto rounded-top" src="${posterUrl}" alt="${movie.title}" />
         <h3 class="text-center mt-2">${movie.title}</h3>
         <p class="d-none">${movie.overview}</p>
-        <p class="btn btn-primary m-2 d-block details" data-bs-toggle="modal" data-bs-target="#movieModal" data-title="${movie.title}" data-overview="${movie.overview}">View Details</p>
+        <p class="btn btn-primary m-2 d-block details" data-bs-toggle="modal"  data-bs-toggle="modal"
+                            data-bs-target="#movieModal"
+                            data-title="${movie.title}"
+                            data-overview="${movie.overview}"
+                            data-movie-id="${movie.id}" data-bs-target="#movieModal" data-title="${movie.title}" data-overview="${movie.overview}">View Details</p>
         <p class="btn btn-success m-2 d-block">Download</p>
       `;
       favouriteContainer.appendChild(movieCard);
@@ -100,22 +104,62 @@ async function populateRest() {
   }
 }
 
-// Modal Event Listener
-document.addEventListener('DOMContentLoaded', () => {
-  populateContinueWatching();
-  populatePopularMovies();
-  populateRest();
 
-  // Handle View Details clicks
-  document.getElementById('favourite-movies').addEventListener('click', (e) => {
-    if (e.target.classList.contains('details')) {
-      const title = e.target.getAttribute('data-title');
-      const overview = e.target.getAttribute('data-overview');
-      document.getElementById('modalMovieTitle').textContent = title;
-      document.getElementById('modalMovieOverview').textContent = overview;
-    }
+
+        // Fetch video link from TMDb
+        async function fetchVideoLink(movieId) {
+          const apiKey = '41b17bf7e61f8e145d97b9276549e8a5'; 
+          if (!apiKey) {
+              console.warn('TMDb API key is missing. Please provide a valid API key.');
+              return null;
+          }
+          try {
+              const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`);
+              if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}, Message: ${await response.text()}`);
+              }
+              const data = await response.json();
+              console.log(`Video data for movie ID ${movieId}:`, data);
+              const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+              if (trailer) {
+                  const trailerUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
+                  console.log(`Trailer URL for movie ID ${movieId}: ${trailerUrl}`);
+                  return trailerUrl;
+              }
+              console.log(`No YouTube trailer found for movie ID ${movieId}`);
+              return null;
+          } catch (error) {
+              console.error('Error fetching video link:', {
+                  movieId,
+                  message: error.message,
+                  stack: error.stack
+              });
+              return null;
+          }
+      }
+     // Modal Event Listener
+     document.addEventListener('DOMContentLoaded', () => {
+      populateContinueWatching();
+      populatePopularMovies();
+      populateRest();
+
+      // Handle View Details clicks
+      document.getElementById('favourite-movies').addEventListener('click', async (e) => {
+          if (e.target.classList.contains('details')) {
+              const title = e.target.getAttribute('data-title');
+              const overview = e.target.getAttribute('data-overview');
+              const movieId = e.target.getAttribute('data-movie-id');
+              document.getElementById('modalMovieTitle').textContent = title;
+              document.getElementById('modalMovieOverview').textContent = overview;
+              const trailerEl = document.getElementById('modalMovieTrailer');
+              trailerEl.textContent = 'Loading trailer...';
+              const trailer = await fetchVideoLink(movieId);
+              trailerEl.innerHTML = trailer
+                  ? `<a href="${trailer}" target="_blank" rel="noopener noreferrer" class="btn btn-danger">Watch Trailer</a>`
+                  : 'No trailer available';
+          }
+      });
   });
-});
 
 // Sign Out function
 function signOut() {

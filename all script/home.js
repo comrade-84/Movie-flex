@@ -161,9 +161,21 @@ async function populateRest() {
       });
   });
 
+
+  const viewProfile = document.getElementById('viewProfile');
+  viewProfile.addEventListener('click', function(e){
+    e.preventDefault();
+    alert(`Email: ${loggedInUser.email}\nPlan: ${loggedInUser.plan}`);
+  })
+
+
+  const logoutEl = document.getElementById('logout');
+  logoutEl.addEventListener('click', signOut);
 // Sign Out function
 function signOut() {
-  localStorage.removeItem("user");
+  alert('you have been logged out');
+  alert('redirecting you to login page');
+  localStorage.removeItem("loggedInUser");
   window.location.href = "/signup_login_shit/index.html";
 }
 

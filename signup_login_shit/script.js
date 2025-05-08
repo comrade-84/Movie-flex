@@ -7,7 +7,7 @@ const signUpLink = document.querySelector('.showSignup');
 
 signUpLink.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href ='/all Html/index.html';
+    window.location.href ='/index.html';
 })
 
 

@@ -7,25 +7,29 @@ const signUpLink = document.querySelector('.showSignup');
 
 signUpLink.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href ='/index.html';
+    window.location.href = '/index.html';
 })
 
 
+// const validatePassword = function (password) {
+//     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+//     return passwordRegex.test(password);
+// };
 const validatePassword = function (password) {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*\d).{1,}$/; // At least one digit, any length
     return passwordRegex.test(password);
 };
-const validateEmail = function(email) {
-   const emailRegex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-   return emailRegex.test(email);
+const validateEmail = function (email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }
-const ShowError = function(input, message) {
+const ShowError = function (input, message) {
     input.classList.add('error');
     const errorElement = input.nextElementSibling;
     errorElement.textContent = message;
 }
-const clearError = function(input) {
-    input.classList.remove('error'); 
+const clearError = function (input) {
+    input.classList.remove('error');
     const errorElement = input.nextElementSibling; // Get the error message element
     if (errorElement) {
         errorElement.textContent = ''; // Clear the error message
@@ -58,14 +62,14 @@ loginButton.addEventListener('click', function (e) {
     if (!validateEmail(email)) {
         ShowError(logInEmail, 'Please enter a valid email address');
         return;
-    }else{
+    } else {
         clearError(logInEmail);
     }
 
     if (!validatePassword(password)) {
-        ShowError(logInPassword, 'Password must be at least 8 characters, with 1 uppercase, 1 lowercase, and 1 number');
+        ShowError(logInPassword, 'Password must contain at least one number');
         return;
-    }else{
+    } else {
         clearError(logInPassword);
     }
 

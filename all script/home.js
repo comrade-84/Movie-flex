@@ -1,53 +1,66 @@
 
-// Movie data
-const movies = [
-  {
-    title: "The Matrix",
-    poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-  },
-  {
-    title: "Interstellar",
-    poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-  },
-  {
-    title: "Pulp Fiction",
-    poster: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-  },
-  {
-    title: "The Dark Knight",
-    poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-  },
-  {
-    title: "Fight Club",
-    poster: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
-  },
-];
-
 // Function to create movie card
 function createMovieCard(movie) {
+  const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  const wordCount = movie.title.trim().split(/\s+/).length;
+  const displayTitle = wordCount > 2 
+    ? movie.title.split(' ').slice(0, 2).join(' ') + '...'
+    : movie.title;
+
   return `
-    <div class="movie-card mx-2">
-      <img src="${movie.poster}" alt="${movie.title}" class="img-fluid" style="width: 200px; border-radius: 8px;">
-      <p class="btn btn-primary m-2 d-block">View Details</p>
-      <p class="btn btn-success m-2 d-block">Download</p>
+    <div class="col-md-3 mb-4">
+      <div class="movie-card h-100 d-flex flex-column">
+        <div class="position-relative">
+          <img src="${posterUrl}" alt="${movie.title}" class="img-fluid w-100" style="border-radius: 8px; object-fit: cover;">
+          <h5 class="text-center my-2 px-2" style="min-height: 48px; overflow: hidden;" title="${movie.title}">
+            ${displayTitle}
+          </h5>
+        </div>
+        <div class="mt-auto">
+          <p class="btn btn-primary m-2 d-block details" data-bs-toggle="modal" data-bs-target="#movieModal" 
+             data-title="${movie.title}" data-overview="${movie.overview}" data-movie-id="${movie.id}">View Details</p>
+        </div>
+      </div>
     </div>
   `;
 }
 
 // Populate Continue Watching
-function populateContinueWatching() {
+async function populateContinueWatching() {
   const continueWatchingContainer = document.getElementById("continue-watching");
-  movies.slice(0, 3).forEach((movie) => {
-    continueWatchingContainer.innerHTML += createMovieCard(movie);
-  });
+  try {
+    const apiKey = '41b17bf7e61f8e145d97b9276549e8a5';
+    const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`);
+    const data = await response.json();
+    const firstThreeMovies = data.results.slice(0, 3);
+    
+    continueWatchingContainer.innerHTML = '<div class="row">';
+    firstThreeMovies.forEach((movie) => {
+      continueWatchingContainer.querySelector('.row').innerHTML += createMovieCard(movie);
+    });
+    continueWatchingContainer.innerHTML += '</div>';
+  } catch (error) {
+    console.error('Error fetching continue watching movies:', error);
+  }
 }
 
 // Populate Popular Movies
-function populatePopularMovies() {
+async function populatePopularMovies() {
   const popularMoviesContainer = document.getElementById("popular-movies");
-  movies.forEach((movie) => {
-    popularMoviesContainer.innerHTML += createMovieCard(movie);
-  });
+  try {
+    const apiKey = '41b17bf7e61f8e145d97b9276549e8a5';
+    const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`);
+    const data = await response.json();
+    const firstSixMovies = data.results.slice(0, 6);
+    
+    popularMoviesContainer.innerHTML = '<div class="row">';
+    firstSixMovies.forEach((movie) => {
+      popularMoviesContainer.querySelector('.row').innerHTML += createMovieCard(movie);
+    });
+    popularMoviesContainer.innerHTML += '</div>';
+  } catch (error) {
+    console.error('Error fetching popular movies:', error);
+  }
 }
 
 // Populate Carousel and Favorite Movies
@@ -80,23 +93,33 @@ async function populateRest() {
 
     // Populate Favorite Movies
     const favouriteContainer = document.getElementById('favourite-movies');
+    favouriteContainer.innerHTML = '<div class="row">';
     results.forEach(movie => {
-      const movieCard = document.createElement('div');
-      movieCard.classList.add('restCard', 'border', 'p-2', 'm-2', 'rounded');
-      const posterUrl = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
-      movieCard.innerHTML = `
-        <img class="d-block m-auto rounded-top" src="${posterUrl}" alt="${movie.title}" />
-        <h3 class="text-center mt-2">${movie.title}</h3>
-        <p class="d-none">${movie.overview}</p>
-        <p class="btn btn-primary m-2 d-block details" data-bs-toggle="modal"  data-bs-toggle="modal"
-                            data-bs-target="#movieModal"
-                            data-title="${movie.title}"
-                            data-overview="${movie.overview}"
-                            data-movie-id="${movie.id}" data-bs-target="#movieModal" data-title="${movie.title}" data-overview="${movie.overview}">View Details</p>
-        <p class="btn btn-success m-2 d-block">Download</p>
+      const wordCount = movie.title.trim().split(/\s+/).length;
+      const displayTitle = wordCount > 2 
+        ? movie.title.split(' ').slice(0, 2).join(' ') + '...'
+        : movie.title;
+      const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+      
+      const movieCard = `
+        <div class="col-md-3 mb-4">
+          <div class="movie-card h-100 d-flex flex-column">
+            <div class="position-relative">
+              <img src="${posterUrl}" alt="${movie.title}" class="img-fluid w-100" style="border-radius: 8px; object-fit: cover;">
+              <h5 class="text-center my-2 px-2" style="min-height: 48px; overflow: hidden;" title="${movie.title}">
+                ${displayTitle}
+              </h5>
+            </div>
+            <div class="mt-auto">
+              <p class="btn btn-primary m-2 d-block details" data-bs-toggle="modal" data-bs-target="#movieModal" 
+                 data-title="${movie.title}" data-overview="${movie.overview}" data-movie-id="${movie.id}">View Details</p>
+            </div>
+          </div>
+        </div>
       `;
-      favouriteContainer.appendChild(movieCard);
+      favouriteContainer.querySelector('.row').innerHTML += movieCard;
     });
+    favouriteContainer.innerHTML += '</div>';
   } catch (error) {
     console.error('Error fetching or displaying movies:', error);
     populateContinueWatching();
@@ -122,7 +145,7 @@ async function populateRest() {
               console.log(`Video data for movie ID ${movieId}:`, data);
               const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
               if (trailer) {
-                  const trailerUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
+                  const trailerUrl = `https://www.youtube.com/embed/${trailer.key}`;
                   console.log(`Trailer URL for movie ID ${movieId}: ${trailerUrl}`);
                   return trailerUrl;
               }
@@ -155,7 +178,9 @@ async function populateRest() {
               trailerEl.textContent = 'Loading trailer...';
               const trailer = await fetchVideoLink(movieId);
               trailerEl.innerHTML = trailer
-                  ? `<a href="${trailer}" target="_blank" rel="noopener noreferrer" class="btn btn-danger">Watch Trailer</a>`
+                  ? `<div class="ratio ratio-16x9">
+                       <iframe src="${trailer}" title="Movie Trailer" allowfullscreen class="embed-responsive-item"></iframe>
+                     </div>`
                   : 'No trailer available';
           }
       });
